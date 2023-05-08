@@ -5,12 +5,7 @@ import SignUpPage from './src/pages/SignUpPage';
 import SignInPage from './src/pages/SignInPage';
 import { useRecoilValue } from 'recoil';
 import { authState } from './src/atoms';
-import MainPage from './src/pages/MainPage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyPage from './src/pages/MyPage';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import Chat from './src/pages/Chat';
 import { Suspense, useEffect } from 'react';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import ErrorScreen from './src/components/common/ErrorScreen';
@@ -22,9 +17,13 @@ export type StackParamList = {
   SignIn: undefined;
 };
 
+export type LoggedInStackParamList = {
+  Chat: undefined;
+};
+
 const AppInner = () => {
   const Stack = createNativeStackNavigator<StackParamList>();
-  const Tab = createBottomTabNavigator();
+  const LoggedInStack = createNativeStackNavigator<LoggedInStackParamList>();
   const user = useRecoilValue(authState);
   const isLoggedIn = !!user.email;
   return (
@@ -50,34 +49,9 @@ const AppInner = () => {
               />
             </Stack.Navigator>
           ) : (
-            <Tab.Navigator>
-              <Tab.Screen
-                name="Main"
-                component={MainPage}
-                options={{
-                  headerShown: false,
-                  tabBarIcon: () => (
-                    <Entypo name="home" size={24} color="black" />
-                  ),
-                  tabBarLabel: '메인',
-                }}
-              />
-              <Tab.Screen
-                name="MyPage"
-                component={MyPage}
-                options={{
-                  headerShown: false,
-                  tabBarIcon: () => (
-                    <Ionicons
-                      name="person-circle-outline"
-                      size={24}
-                      color="black"
-                    />
-                  ),
-                  tabBarLabel: '내정보',
-                }}
-              />
-            </Tab.Navigator>
+            <LoggedInStack.Navigator>
+              <LoggedInStack.Screen name="Chat" component={Chat} />
+            </LoggedInStack.Navigator>
           )}
         </Suspense>
       </ErrorBoundary>
