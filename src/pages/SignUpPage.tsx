@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { StackParamList } from '../../AppInner';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validate } from '../utils/validate';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebase';
 
 export interface SignUpProps {
   email: string;
@@ -34,6 +36,7 @@ const SignUpPage = () => {
   const onSignUp = () => {
     if (validate(input) === '') {
       Alert.alert('회원가입이 완료되었습니다.');
+      createUserWithEmailAndPassword(auth, input.email, input.password);
       navigation.navigate('SignIn');
     } else {
       setError(validate(input));
@@ -50,7 +53,7 @@ const SignUpPage = () => {
           <Ionicons name="ios-chevron-back" size={28} color="black" />
         </Pressable>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.title}>SIGN UP</Text>
+          <Text style={styles.title}>회원가입</Text>
         </View>
       </View>
       <Input

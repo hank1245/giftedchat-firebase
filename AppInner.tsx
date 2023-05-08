@@ -10,6 +10,7 @@ import { Suspense, useEffect } from 'react';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import ErrorScreen from './src/components/common/ErrorScreen';
 import LoadingScreen from './src/components/common/LoadingScreen';
+import Home from './src/pages/Home';
 
 export type StackParamList = {
   Welcome: undefined;
@@ -18,6 +19,7 @@ export type StackParamList = {
 };
 
 export type LoggedInStackParamList = {
+  Home: undefined;
   Chat: undefined;
 };
 
@@ -51,6 +53,11 @@ const AppInner = () => {
           ) : (
             <LoggedInStack.Navigator>
               <LoggedInStack.Screen name="Chat" component={Chat} />
+              <LoggedInStack.Screen
+                name="Home"
+                component={Home}
+                options={{ headerShown: false }}
+              />
             </LoggedInStack.Navigator>
           )}
         </Suspense>

@@ -6,14 +6,27 @@ import Button from '../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 import { authState } from '../atoms';
+import { useState } from 'react';
+import { auth } from '../../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignInPage = () => {
   const navigation = useNavigation();
-  const [auth, setAuth] = useRecoilState(authState);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authData, setAuthData] = useRecoilState(authState);
 
   async function onLogin() {
-    const data = { name: 'hank', email: 'test@gmail.com' };
-    setAuth(data);
+    if (email !== '' && password !== '') {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(data => {
+          console.log(data.user);
+
+          console.log('success');
+          setAuthData({ email: data.user.email! });
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   return (
@@ -28,14 +41,19 @@ const SignInPage = () => {
           <Ionicons name="ios-chevron-back" size={28} color="black" />
         </Pressable>
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.title}>LOGIN</Text>
+          <Text style={styles.title}>로그인</Text>
         </View>
       </View>
-      <Input style={{ marginTop: '25%' }} placeholder="이메일" />
+      <Input
+        style={{ marginTop: '25%' }}
+        placeholder="이메일"
+        onChangeText={text => setEmail(text)}
+      />
       <Input
         style={{ marginTop: 12 }}
         placeholder="비밀번호"
         secureTextEntry={true}
+        onChangeText={text => setPassword(text)}
       />
       <Button text="로그인하기" style={{ marginTop: 34 }} onPress={onLogin} />
     </SafeAreaView>

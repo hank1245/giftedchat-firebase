@@ -11,7 +11,7 @@ const WelcomePage = () => {
   return (
     <SafeAreaView style={{ alignItems: 'center' }}>
       <View style={styles.textContainer}>
-        <Text style={styles.text}>Welcome</Text>
+        <Text style={styles.text}>도토리톡</Text>
       </View>
       <Button
         text="회원가입"
