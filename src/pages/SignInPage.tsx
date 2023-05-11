@@ -4,26 +4,24 @@ import { Ionicons } from '@expo/vector-icons';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import { useNavigation } from '@react-navigation/native';
-import { useRecoilState } from 'recoil';
-import { authState } from '../atoms';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { userDataState } from '../atoms';
 import { useState } from 'react';
-import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth } from 'firebase/auth/react-native';
 
 const SignInPage = () => {
+  const auth = getAuth();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [authData, setAuthData] = useRecoilState(authState);
+  const setUserData = useSetRecoilState(userDataState);
 
   async function onLogin() {
     if (email !== '' && password !== '') {
       signInWithEmailAndPassword(auth, email, password)
         .then(data => {
-          console.log(data.user);
-
-          console.log('success');
-          setAuthData({ email: data.user.email! });
+          setUserData({ email: data.user.email! });
         })
         .catch(err => console.log(err));
     }

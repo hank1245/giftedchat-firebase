@@ -16,8 +16,7 @@ import { StackParamList } from '../../AppInner';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { validate } from '../utils/validate';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../config/firebase';
-
+import { getAuth } from 'firebase/auth/react-native';
 export interface SignUpProps {
   email: string;
   password: string;
@@ -25,6 +24,7 @@ export interface SignUpProps {
 }
 
 const SignUpPage = () => {
+  const auth = getAuth();
   const navigation =
     useNavigation<NativeStackNavigationProp<StackParamList, 'SignUp'>>();
   const [input, setInput] = useState<SignUpProps>({

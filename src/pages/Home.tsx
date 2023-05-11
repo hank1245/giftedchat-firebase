@@ -1,15 +1,16 @@
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRecoilState } from 'recoil';
-import { authState } from '../atoms';
-import { auth } from '../../config/firebase';
 import { signOut } from 'firebase/auth';
+import { getAuth } from 'firebase/auth/react-native';
+import { useSetRecoilState } from 'recoil';
+import { userDataState } from '../atoms';
 
 const Home = () => {
-  const [userData, setUserData] = useRecoilState(authState);
-  const onSignOut = () => {
-    signOut(auth);
-    setUserData({ email: undefined });
+  const auth = getAuth();
+  const setUserData = useSetRecoilState(userDataState);
+  const onSignOut = async () => {
+    setUserData({ email: null });
+    await signOut(auth);
   };
   return (
     <SafeAreaView

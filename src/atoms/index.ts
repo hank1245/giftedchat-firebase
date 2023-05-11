@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
 
-interface User {
-  email: string | undefined;
+interface UserData {
+  email: string | null;
 }
 
-export const authState = atom<User>({
-  key: 'authState',
+export const userDataState = atom<UserData>({
+  key: 'userData',
   default: {
-    email: undefined,
+    email: null,
   },
 });

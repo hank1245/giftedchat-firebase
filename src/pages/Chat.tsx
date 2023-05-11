@@ -1,7 +1,8 @@
 import { useLayoutEffect, useState } from 'react';
 import { Dimensions, SafeAreaView, Text, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { auth, database } from '../../config/firebase';
+import { database } from '../../config/firebase';
+import { getAuth } from 'firebase/auth/react-native';
 import {
   collection,
   query,
@@ -11,6 +12,7 @@ import {
 } from 'firebase/firestore';
 
 const Chat = () => {
+  const auth = getAuth();
   const [messages, setMessages] = useState<any[]>([]);
   const handleSend = (newMessages: any) => {
     setMessages(previousMessages =>

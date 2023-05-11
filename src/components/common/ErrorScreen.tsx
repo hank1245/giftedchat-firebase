@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import Button from './Button';
-import { useNavigation } from '@react-navigation/native';
 
 function ErrorScreen() {
   return (
