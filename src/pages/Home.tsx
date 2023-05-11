@@ -4,13 +4,21 @@ import { signOut } from 'firebase/auth';
 import { getAuth } from 'firebase/auth/react-native';
 import { useSetRecoilState } from 'recoil';
 import { userDataState } from '../atoms';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { LoggedInStackParamList } from '../../AppInner';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const auth = getAuth();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<LoggedInStackParamList, 'Chat'>>();
   const setUserData = useSetRecoilState(userDataState);
   const onSignOut = async () => {
     setUserData({ email: null });
     await signOut(auth);
+  };
+  const onEnter = () => {
+    navigation.navigate('Chat');
   };
   return (
     <SafeAreaView
@@ -30,6 +38,14 @@ const Home = () => {
           </Pressable>
         </View>
       </View>
+      <Pressable
+        onPress={onEnter}
+        style={{ width: '100%', alignItems: 'center' }}
+      >
+        <View style={styles.rooms}>
+          <Text>행크</Text>
+        </View>
+      </Pressable>
     </SafeAreaView>
   );
 };
@@ -38,6 +54,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
+  },
+  rooms: {
+    width: '85%',
+    height: 50,
+    marginVertical: 20,
+    padding: 5,
+    backgroundColor: 'red',
   },
 });
 

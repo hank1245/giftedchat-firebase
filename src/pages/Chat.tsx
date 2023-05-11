@@ -18,7 +18,8 @@ const Chat = () => {
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, newMessages),
     );
-    const { _id, createdAt, text, user } = messages[0];
+
+    const { _id, createdAt, text, user } = newMessages[0];
     addDoc(collection(database, 'chats'), {
       _id,
       createdAt,
@@ -29,12 +30,12 @@ const Chat = () => {
 
   useLayoutEffect(() => {
     const collectionRef = collection(database, 'chats');
-    const q = query(collectionRef, orderBy('point', 'desc'));
+    const q = query(collectionRef, orderBy('createdAt', 'desc'));
     const unsub = onSnapshot(q, snap => {
       setMessages(
         snap.docs.map(doc => ({
           _id: doc.id,
-          createdAt: doc.data().createdAt,
+          createdAt: doc.data().createdAt.seconds,
           text: doc.data().text,
           user: doc.data().user,
         })),
@@ -47,8 +48,10 @@ const Chat = () => {
     <GiftedChat
       messages={messages}
       onSend={handleSend}
+      showUserAvatar={true}
       user={{
         _id: auth?.currentUser!.email!,
+        name: auth?.currentUser!.email as string,
       }}
     />
   );
